@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Matemática</title>
+    <style>
+        div{font-size: 20px; text-align: center; margin-bottom: 10px;}
+        button{font-size: 16px;}
+        h1{text-align: center;}
+        input{font-size: 16px; padding: 5px;}
+        #mensagem{font-size: 20px; text-align: center; margin-top: 10px;}
+        .centralizado { margin: 0 auto; }
+        body{background-color: snow;}
+        fieldset{background-color: silver; margin: 0 auto;}
+    </style>
+</head>
+<body>
+
+    <h1>Quiz de Matemática</h1>
+    <br>
+    
+    <fieldset style="width:400px">
+    <div id="tempo">Você tem 15s para responder, Boa Sorte!</div>
+    
+    <div id="pergunta1" style="display:none;">
+        <p>1. Qual é o resultado de 25 × 4?</p>
+        <input type="text" id="resposta1" placeholder="Digite sua resposta">
+    </div>
+    
+    <div id="pergunta2" style="display:none;">
+        <p>2. Qual é o quadrado de 12?</p>
+        <input type="text" id="resposta2" placeholder="Digite sua resposta">
+    </div>
+
+    <div id="pergunta3" style="display:none;">
+        <p>3. Qual é a raiz quadrada de 144?</p>
+        <input type="text" id="resposta3" placeholder="Digite sua resposta">
+    </div>
+
+    <div id="pergunta4" style="display:none;">
+        <p>4. Quanto é 3 elevado à quarta potência?</p>
+        <input type="text" id="resposta4" placeholder="Digite sua resposta">
+    </div>
+    
+    <div id="mensagem"></div>
+    <br>
+    
+    <div id="botoes">
+        <button id="startButton" onclick="start()">Iniciar</button>
+        <button id="submitButton" onclick="submit()" style="display:none;">Enviar</button>
+    </div>
+    </fieldset>
+
+    <script>
+        var perguntas = [
+            "Qual é o resultado de 25 × 4?",
+            "Qual é o quadrado de 12?",
+            "Qual é a raiz quadrada de 144?",
+            "Quanto é 3 elevado à quarta potência?"
+        ];
+
+        var respostas = ["100", "144", "12", "81"];
+
+        var tempo = 15;
+        var countdown;
+        var currentQuestion = 0;
+
+        function start() {
+            document.getElementById("startButton").disabled = true;
+            document.getElementById("pergunta1").style.display = "block";
+            document.getElementById("submitButton").style.display = "block";
+            document.getElementById("submitButton").classList.add("centralizado");
+            countdown = setInterval(function() {
+                tempo--;
+                if (tempo <= 0 || currentQuestion >= perguntas.length) {
+                    clearInterval(countdown);
+                    document.getElementById("submitButton").style.display = "none";
+                    document.getElementById("mensagem").innerHTML = "Tempo esgotado!";
+                } else {
+                    document.getElementById("tempo").innerHTML = tempo + "s";
+                }
+            }, 1000);
+        }
+
+        function submit() {
+            var resposta = document.getElementById("resposta" + (currentQuestion + 1)).value.trim();
+            if (resposta === respostas[currentQuestion]) {
+                document.getElementById("mensagem").innerHTML = "Resposta correta!";
+                document.getElementById("mensagem").style.color = "blue";
+            } else {
+                document.getElementById("mensagem").innerHTML = "Resposta incorreta!";
+                document.getElementById("mensagem").style.color = "red";
+            }
+            document.getElementById("pergunta" + (currentQuestion + 1)).style.display = "none";
+            currentQuestion++;
+            if (currentQuestion < perguntas.length) {
+                document.getElementById("pergunta" + (currentQuestion + 1)).style.display = "block";
+                tempo = 15;
+                document.getElementById("tempo").innerHTML = tempo + "s";
+            } else {
+                clearInterval(countdown);
+                document.getElementById("submitButton").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
